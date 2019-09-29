@@ -1,0 +1,34 @@
+{
+  "name": "liu-node-cli",
+  "version": "1.0.0",
+  "description": "基于webpack的前端VUE、REACT项目自动化构建",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/vue/vue help"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "liuvue": "bin/vue.js",
+    "liureact": "bin/react.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "inquirer": "^6.0.0",
+    "ora": "^2.1.0",
+    "user-home": "^2.0.0"
+  },
+  "author": "刘培",
+  "license": "ISC",
+  "devDependencies": {
+    "commander": "^2.9.0",
+    "inquirer": "^6.0.0",
+    "ora": "^2.1.0",
+    "user-home": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liu-ideal/liu-node-cli"
+  },
+  "__npminstall_done": "Sun Sep 29 2019 21:39:58 GMT+0800 (GMT+08:00)"
+}
