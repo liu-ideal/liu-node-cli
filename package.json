@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "commander": "^2.9.0",
-    "inquirer": "^6.0.0",
     "ora": "^2.1.0",
     "user-home": "^2.0.0"
   },
@@ -22,7 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "commander": "^2.9.0",
-    "inquirer": "^6.0.0",
+    "inquirer": "^6.5.2",
     "ora": "^2.1.0",
     "user-home": "^2.0.0"
   },
