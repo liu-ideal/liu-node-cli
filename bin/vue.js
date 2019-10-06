@@ -1,35 +1,23 @@
 #!/usr/bin/env node
-
-const program = require('commander');
-let path = require("path")
-let fs = require("fs")
-const home = require('user-home')
-const inquirer = require('inquirer')
-const Ask=require("../lib/ask")
-const fileHandle=require("../lib/fileHandle")
-const download=require("../lib/download")
-const resolve=require("../lib/pathRoot").resolve
-program
-    .usage('<command> [options]')
-    .command('init', '自动化创建一个简单的vue项目')
-    .alias("vb")
-    .description("vue自动化工具")
-    .action(() => {
-        console.log("创建一个vue项目")
-    })
-
-
-program.on('--help', () => {
+const inquirer = require('inquirer');
+const proPath = process.cwd();
+const commander =require('commander');
+const fs = require('fs');
+const webpackConfigAsk =require('../lib/webpackConfigAsk.js');
+const path = require('path');
+const ora = require('ora');
+const spinner = ora('downloading------');
+const fileHandle = require('../lib/fileHandle.js');
+commander.on('--help', () => {
     let useConfig = `
-
     作者：刘培
     使用说明：
     注意!!!  "必须保证node在7.3以上版本"
       01.创建项目：
-        liuvue [project-name]
+        liuvue  [project-name]
 
       02.进入项目
-        cd [project-name]
+        cd  [project-name]
 
       03.安装所有依赖
         npm install 或 cnpm install
@@ -54,112 +42,90 @@ program.on('--help', () => {
           description            项目描述
           author                 项目作者
           email                  邮箱
-          device                 项目平台
-          host                   项目访问地址
           port                   项目端口号
-          browerOpen             是否在浏览器中直接打开
-          devtool                是否使用webpack的devtool调试代码
-          cssType                是否使用sass，less进行css书写
           esLint                 是否使用esLint
   `
     console.log(useConfig)
 })
-program.parse(process.argv);
-program
-  .usage('<template-name> [project-name]')
-  .parse(process.argv);
-
-// 入口
-function main(){
-    if(program.args[2]=="[object Object]"){
-      run()
-    }else{
-      let str=
-  `
-  注意创建项目格式：
-
-  template-name:
-
-      webpack：自动集成了所有的配置，在创建项目时，以询问的方式进行项目配置
-      normal：可以添加任何一种react模板，不具备创建项目时的询问
-
-  #创建项目：
-
-      vuebw init <template-name> [project-name]
-
-  example:
-
-      vuebw init webpack vueTest
-
-      vuebw init normal vueTest
-  `
-        console.log(str)
-    }
+commander.parse(process.argv);
+let proName='';
+if(commander.args.length===1){
+  proName=commander.args[0];
+  goStart(proName)
+}else{
+  let str=`请注意创建项目的格式  如需要帮助请输入liuvue -h`;
+  console.log(str);
 }
+function goStart(proName){
+   if(fs.existsSync(proName)){
+     console.log('文件名已经存在 请重新使用不同的项目名称');
+     return
+   }else{
+     let data = [{
+             type: 'input',
+             message: 'name?',
+             name: 'name',
+             default: proName
+         },
+         {
+             type: 'input',
+             message: 'description?',
+             name: 'description',
+             default: ""
+         },
+         {
+             type: 'input',
+             message: 'author?',
+             name: 'author',
+             default: ""
+         },
+         {
+             type: 'input',
+             message: 'email?',
+             name: 'email',
+             default: ""
+         }
+     ];
+     let promptObj =inquirer.prompt(data);
+     let baseOption= promptObj.ui.answers;
+     let webpackOption =null;
+      promptObj.then(()=>{
+        //baseOption.ui.answers
+        let promptObjTwo=webpackConfigAsk.toAsk();
+        webpackOption=promptObjTwo.ui.answers;
+        promptObjTwo.then(()=>{
+          spinner.start(); //动画效果开始
+        let vueTemplate= webpackOption.vueRelated?path.join(__dirname,'..','vue/vue-router-vuex'):path.join(__dirname,'..','vue/vue-base');
+        let direcName=path.join(proPath,proName);
+        fs.mkdirSync(direcName);
+        let targetDir = fs.readdirSync(vueTemplate);
 
-main()
+        targetDir.forEach((i)=>{//复制完文件 进行下一步改JSON
+          let sourcePath=path.join(vueTemplate,i);
+          fileHandle.testCopy(sourcePath,direcName);
+        })
+         fileHandle.reviseJson(direcName+'/package.json',baseOption).then(()=>{
+           webpackOption={
+             port:webpackOption.port,
+             esLintUse:webpackOption.esLint
+           }
+          fileHandle.reviseJs(direcName+'/config/config.js',webpackOption);
+             spinner.stop()
+             let str=`
+                项目初始化完毕
+               cd ${proName}
 
-async function run(){
+               npm install
 
-    switch(program.args[0]){
-        case "webpack":{
-            var templateReadPath=path.join(__dirname,"../../template/vue/webpack");
-            console.log(program.args);
-        } break;
-        case "normal":{
-            var templateReadPath=path.join(__dirname,"../../template/vue/normal")
+               npm start
+             `
+             console.log(str);
 
-        } break;
-    }
+         })
+          //console.log(webpackOption);
+        })
 
 
-
-   let config=await Ask(program,"vue",templateReadPath)
-
-   let templatePath=path.join(templateReadPath,config["vue-project-type"])
-   await download(templatePath)
-
-   let amendPack=await amendPackage(config)
-   program.args[0]=="webpack"?await amendProjectConfig(config):null
-}
-
-
-// // 修改package.json文件
-
-function amendPackage(config){
-    let amendConfig={
-      name:config.name,
-      author:config.author,
-      description:config.description,
-      email:config.email,
-    }
-    return fileHandle.amendJson(amendConfig)
-}
-
-async function amendProjectConfig(config){
-  let amendConfig={
-    type:config.device,
-    width:config.deviceWidth,
-    host:config.host,
-    port:config.port,
-    publicPath:`http://${config.host}:${config.port}/`,
-    browserOpen: config.browserOpen,
-    devtool:config.devtool=="false"?false:config.devtool,
-    esLintUse:config.esLint,
-    cssType:config.cssType=="false"?false:config.cssType
-  }
-
-  Object.assign(amendConfig,testMock(config))
-
-    await fileHandle.amendConfig(amendConfig)
-  if(!config.mock){
-    await fileHandle.delDir(resolve("mock"))
-  }
-
-}
-
-function testMock(config){
-  if(!config.mock){
-    return {before:null}
-  }
+     })
+   }
 }
