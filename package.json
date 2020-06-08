@@ -1,28 +1,65 @@
 {
-  "name": "liu-node-cli",
-  "version": "1.0.0",
-  "description": "基于webpack的前端VUE、REACT项目自动化构建",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+  "__npminstall_done": "Sun Sep 29 2019 21:39:58 GMT+0800 (GMT+08:00)",
+  "_from": "liu-node-cli",
+  "_id": "liu-node-cli@2.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-xoRR9EhNWBsFZhX7vTWFxDvwosU6g5kEQLrs1/sx9CcqzAQcmiM1d6Bnnrri18YVguj2DoUwAHHyzEgPP8Tv8A==",
+  "_location": "/liu-node-cli",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "liu-node-cli",
+    "name": "liu-node-cli",
+    "escapedName": "liu-node-cli",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
-  "preferGlobal": true,
-  "bin": {
-    "liuvue": "bin/vue.js",
-    "liureact": "bin/react.js"
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/liu-node-cli/-/liu-node-cli-1.0.1.tgz",
+  "_shasum": "bad011902f276c1b51681a48a82a33bbdac77758",
+  "_spec": "liu-node-cli",
+  "_where": "D:\\personalFolder\\clitest",
+  "author": {
+    "name": "刘培"
   },
+  "bin":"./bin/index.ts",
+  "bugs": {
+    "url": "https://github.com/liu-ideal/liu-node-cli/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "commander": "^2.9.0",
+    "inquirer": "^6.5.2",
     "ora": "^2.1.0",
-    "inquirer": "^6.5.2"
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2",
+    "@types/node": "^14.0.1"
   },
-  "author": "刘培",
-  "license": "ISC",
+  "deprecated": false,
+  "description": "基于webpack的前端VUE、REACT项目自动化构建",
   "devDependencies": {
+    "commander": "^2.9.0",
+    "inquirer": "^6.5.2",
+    "ora": "^2.1.0",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2",
+    "@types/node": "^14.0.1"
   },
+  "homepage": "https://github.com/liu-ideal/liu-node-cli#readme",
+  "license": "ISC",
+  "name": "liu-node-cli",
+  "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/liu-ideal/liu-node-cli"
+    "url": "git+https://github.com/liu-ideal/liu-node-cli.git"
   },
-  "__npminstall_done": "Sun Sep 29 2019 21:39:58 GMT+0800 (GMT+08:00)"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.2"
 }
