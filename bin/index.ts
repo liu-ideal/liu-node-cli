@@ -248,14 +248,14 @@ async function start() {
     inquireAnswers.port = answers.port;
     let templetePath: string;
     if (inquireAnswers.temIsCommon) {
-      templetePath = path.join(__dirname, "templete/common_tem_liu");
+      templetePath = path.join(__dirname, "../","templete/common_tem_liu");
       // console.log("模板路径", templetePath);
 
     } else if (inquireAnswers.temIsReact) {
-      templetePath = path.join(__dirname, "templete/react_tem_liu")
+      templetePath = path.join(__dirname, "../","templete/react_tem_liu")
       // console.log("模板路径", templetePath);
     } else {
-      templetePath = path.join(__dirname, "templete/vue_tem_liu")
+      templetePath = path.join(__dirname, "../","templete/vue_tem_liu")
       // console.log("模板路径", templetePath);
     }
     // console.log("项目路径", proPath);
